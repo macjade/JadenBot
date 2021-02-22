@@ -5,9 +5,10 @@ from twilio.rest import Client
 from twilio.twiml.voice_response import VoiceResponse, Say
 
 from dateutil.parser import parse
+import os
 
-account_sid = 'AC9e569179895717e9ee90661f807e836d'
-auth_token = 'd20d23253b1a41aa9244c5081a4139e6'
+account_sid = os.environ.get('ACCOUNT_SID')
+auth_token = os.environ.get('AUTH_TOKEN')
 client = Client(account_sid, auth_token)
 
 from dateutil.relativedelta import *
@@ -24,10 +25,10 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 app = Flask(__name__)
 
-app.config['MYSQL_HOST'] = 'den1.mysql5.gear.host'
-app.config['MYSQL_USER'] = 'bottest'
-app.config['MYSQL_PASSWORD'] = 'Nt9F8umm_l_j'
-app.config['MYSQL_DB'] = 'bottest'
+app.config['MYSQL_HOST'] = os.environ.get('MYSQL_HOST')
+app.config['MYSQL_USER'] = os.environ.get('MYSQL_USER')
+app.config['MYSQL_PASSWORD'] = os.environ.get('MYSQL_PASSWORD')
+app.config['MYSQL_DB'] = os.environ.get('MYSQL_USER')
 
 mysqld = MySQL(app)
 
@@ -172,8 +173,8 @@ def sendcall(body, UserId):
             f.write(bd['message'])
 
         call = client.calls.create(
-            url='https://f06d4903ca3d.ngrok.io/static/msg.txt',#'http://demo.twilio.com/docs/voice.xml',
-            to='+2349032885704',
+            url='https://f06d4903ca3d.ngrok.io/static/msg.txt',
+            to='+2348146089071',
             from_='+13869994478'
         )
         print(call)
@@ -285,10 +286,10 @@ def deletereminder(body, userId):
 
 def sendreminder():
     conn = mysql.connector.connect(
-        host="den1.mysql5.gear.host",
-        user="bottest",
-        password='Nt9F8umm_l_j',
-        database="bottest"
+        host=os.environ.get('MYSQL_HOST'),
+        user=os.environ.get('MYSQL_USER'),
+        password=os.environ.get('MYSQL_PASSWORD'),
+        database=os.environ.get('MYSQL_USER')
     )
     fmt = "%Y-%m-%d %H:%M:%S"
     cur = conn.cursor()
